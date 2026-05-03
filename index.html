@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isabelle Laing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #E8EDF2;
+    --navy: #2C3947;
+    --mid: #547A95;
+    --gold: #C2A56D;
+    --gold-light: #D4BC8E;
+    --ink: #1E2A35;
+    --ink-light: #3A4E5E;
+    --ink-muted: #7A90A0;
+    --line: rgba(44,57,71,0.13);
+    --bg-hover: rgba(84,122,149,0.05);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.35;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  header {
+    padding: 5rem 0 3rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: end;
+    border-bottom: 0.5px solid var(--line);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  .name-block h1 {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--navy);
+  }
+
+  .name-block .tagline {
+    margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .photo-block img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 50%;
+    filter: contrast(1.05);
+    border: 2px solid rgba(84,122,149,0.25);
+  }
+
+  nav {
+    padding: 1.5rem 0;
+    display: flex;
+    gap: 2rem;
+    border-bottom: 0.5px solid var(--line);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.1s forwards;
+  }
+
+  nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--mid); }
+
+  section {
+    padding: 4rem 0;
+    border-bottom: 0.5px solid var(--line);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  section:nth-child(2) { animation-delay: 0.15s; }
+  section:nth-child(3) { animation-delay: 0.2s; }
+  section:nth-child(4) { animation-delay: 0.25s; }
+  section:nth-child(5) { animation-delay: 0.3s; }
+  section:nth-child(6) { animation-delay: 0.35s; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 2rem;
+  }
+
+  .about-text {
+    font-size: 1.3rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--ink-light);
+    max-width: 660px;
+    margin-bottom: 2rem;
+  }
+
+  .about-text strong {
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .about-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border: 0.5px solid var(--mid);
+    color: var(--mid);
+    transition: background 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn:hover { background: var(--mid); color: var(--cream); }
+
+  .btn-primary {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--cream);
+  }
+
+  .btn-primary:hover { background: var(--mid); border-color: var(--mid); }
+
+  .research-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2rem;
+    padding: 1.75rem 0;
+    border-bottom: 0.5px solid var(--line);
+    transition: background 0.2s;
+  }
+
+  .research-item:last-child { border-bottom: none; }
+  .research-item:hover { background: var(--bg-hover); }
+
+  .research-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    padding-top: 0.2rem;
+    line-height: 1.6;
+  }
+
+  .research-content h3 {
+    font-size: 1.12rem;
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+
+  .research-content .org {
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .research-content p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-muted);
+    font-weight: 300;
+  }
+
+  .award-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.9rem 0;
+    border-bottom: 0.5px solid var(--line);
+  }
+
+  .award-item:last-child { border-bottom: none; }
+
+  .award-name {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .award-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  .outreach-text {
+    font-size: 1.15rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink-light);
+    max-width: 620px;
+  }
+
+  .outreach-text strong {
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .contact-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .contact-item a {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-item a:hover { color: var(--mid); }
+
+  footer {
+    padding: 2.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    header { grid-template-columns: 1fr; gap: 2rem; }
+    .photo-block { order: -1; }
+    .photo-block img { width: 100px; height: 100px; }
+    .research-item { grid-template-columns: 1fr; gap: 0.4rem; }
+    nav { flex-wrap: wrap; gap: 1rem; }
+    .about-links { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="name-block">
+      <h1>Isabelle Laing</h1>
+      <p class="tagline">Undergraduate Student &amp; Researcher &nbsp;·&nbsp; Astrophysics &amp; Physics &nbsp;·&nbsp; University of Toronto</p>
+    </div>
+    <div class="photo-block">
+      <img src="IsabelleLaing_c.jpg" alt="Isabelle Laing">
+    </div>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#awards">Awards</a>
+    <a href="#presentations">Presentations</a>
+    <a href="#outreach">Outreach</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about">
+    <p class="section-label">About</p>
+    <p class="about-text">
+      My work sits at the intersection of <strong>machine learning and astrophysics</strong>. I have used neural networks to trace the Milky Way's assembly history through stellar chemistry, and explored dark matter's role in shaping stellar streams using GCNNs. My most recent work is with the <strong>Canadian Institute for Theoretical Astrophysics (CITA)</strong> in the SURP — studying statistical signatures in polarimetric light curves from black hole accretion, supervised by Dr. Rohan Dahale, Dr. Aviad Levis, and Dr. Bart Ripperda.
+    </p>
+    <div class="about-links">
+      <a class="btn btn-primary" href="CV_laing.pdf" download>Download CV</a>
+      <a class="btn" href="https://www.linkedin.com/in/isabelle-l-388439397" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <section id="research">
+    <p class="section-label">Research Experience</p>
+
+    <div class="research-item">
+      <div class="research-date">May 2026<br>— Present</div>
+      <div class="research-content">
+        <h3>SURP — Summer Undergraduate Research Program</h3>
+        <p class="org">Canadian Institute for Theoretical Astrophysics (CITA) · Dr. Rohan Dahale, Dr. Aviad Levis &amp; Dr. Bart Ripperda</p>
+        <p>Studying statistical signatures in polarimetric light curves from black hole accretion discs.</p>
+      </div>
+    </div>
+
+    <div class="research-item">
+      <div class="research-date">Sep 2025<br>— Present</div>
+      <div class="research-content">
+        <h3>AST430 Student Research Course</h3>
+        <p class="org">David A. Dunlap Dept. of Astronomy &amp; Astrophysics, UofT · Dr. Renée Hložek</p>
+        <p>Building a full pipeline for stellar stream simulation to investigate how different dark matter models affect stream morphology. Part of the Hnauts research team.</p>
+      </div>
+    </div>
+
+    <div class="research-item">
+      <div class="research-date">May–Aug 2025</div>
+      <div class="research-content">
+        <h3>Student Research Internship</h3>
+        <p class="org">Sydney Institute for Astrophysics, University of Sydney · Dr. Joss Bland-Hawthorn &amp; Dr. Thorsten Tepper-Garcia</p>
+        <p>Identified and analysed clumps in galactic simulations for the Galacticos Group.</p>
+      </div>
+    </div>
+
+    <div class="research-item">
+      <div class="research-date">May 2024<br>— Aug 2025</div>
+      <div class="research-content">
+        <h3>SURP — Summer Undergraduate Research Program</h3>
+        <p class="org">David A. Dunlap Dept. of Astronomy &amp; Astrophysics, UofT · Dr. Josh Speagle &amp; Dr. Ting Li</p>
+        <p>Applied neural networks to derive stellar parameters and chemical abundances from spectra. Released a public catalogue of predictions for over 12 million Milky Way stars. Focus on galactic archaeology and the assembly history of the Milky Way halo.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="awards">
+    <p class="section-label">Awards &amp; Honours</p>
+    <div class="award-item">
+      <span class="award-name">Data Science &amp; AI Talent Showcase Poster Award, University of Toronto</span>
+      <span class="award-year">2026</span>
+    </div>
+    <div class="award-item">
+      <span class="award-name">Samuel Beatty Fund Travel Award, Physics Department UofT</span>
+      <span class="award-year">2026</span>
+    </div>
+    <div class="award-item">
+      <span class="award-name">SURP Poster Award, University of Toronto</span>
+      <span class="award-year">2025</span>
+    </div>
+    <div class="award-item">
+      <span class="award-name">University of Toronto Admissions Scholarship</span>
+      <span class="award-year">2023</span>
+    </div>
+  </section>
+
+  <section id="presentations">
+    <p class="section-label">Presentations</p>
+    <div class="award-item">
+      <span class="award-name">Presentation, University of Toronto Physics Union Undergraduate Research Conference</span>
+      <span class="award-year">Mar 2026</span>
+    </div>
+    <div class="award-item">
+      <span class="award-name">Presentation, Canadian Conference for Undergraduate Women &amp; Gender Minorities in Physics</span>
+      <span class="award-year">Jan 2026</span>
+    </div>
+    <div class="award-item">
+      <span class="award-name">Poster, Data Sciences Institute Talent Showcase, University of Toronto</span>
+      <span class="award-year">Jan 2026</span>
+    </div>
+    <div class="award-item">
+      <span class="award-name">Poster, SURP Poster Fair, University of Toronto</span>
+      <span class="award-year">2024 &amp; 2025</span>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <p class="section-label">Through the Eyepiece</p>
+    <div style="max-width: 660px;">
+      <img src="galaxy_c.png" alt="Galaxy imaged at Mt Stromlo" style="width:100%; display:block; border-radius: 2px; filter: brightness(1.05) contrast(1.05);">
+      <p style="margin-top: 0.9rem; font-family: 'DM Mono', monospace; font-size: 0.63rem; letter-spacing: 0.1em; color: var(--ink-muted); line-height: 1.6;">
+        Imaged at the McNamara–Saunders Astronomical Teaching Telescope (MSATT), Mt Stromlo Observatory, 2022.
+      </p>
+    </div>
+  </section>
+
+  <section id="outreach">
+    <p class="section-label">Outreach</p>
+    <p class="outreach-text">
+      Science communication and community engagement are central to how I practise research. I am currently <strong>President of the Astronomy Union</strong> at the University of Toronto, and am actively involved in AstroTours, Astro on Tap, and the Girls in STEM workshop series. I believe in making astrophysics accessible — whether through public talks, student events, or hands-on workshops.
+    </p>
+  </section>
+
+  <section id="contact">
+    <p class="section-label">Contact</p>
+    <div class="contact-row">
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <a href="mailto:isabelle.laing@mail.utoronto.ca">isabelle.laing@mail.utoronto.ca</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">LinkedIn</span>
+        <a href="https://www.linkedin.com/in/isabelle-l-388439397" target="_blank" rel="noopener">isabelle-l-388439397</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">CV</span>
+        <a href="CV_laing.pdf" download>Download PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Isabelle Laing · Toronto</p>
+    <p>Astrophysics &amp; Physics · University of Toronto</p>
+  </footer>
+
+</div>
+</body>
+</html>
